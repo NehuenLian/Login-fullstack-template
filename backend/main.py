@@ -61,27 +61,27 @@ def openapi(credentials: bool = Depends(verify_credentials)):
     return get_openapi(title="My API", version="1.0.0", routes=app.routes)
 
 
-# Force HTTPS Middleware
-class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request:  Request, call_next):
-        if request.url.scheme != "https":
-            url = request.url.replace(scheme="https")
-            return RedirectResponse(url=url)
-        response = await call_next(request)
-        return response
-app.add_middleware(HTTPSRedirectMiddleware)
+# # Force HTTPS Middleware
+# class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
+#     async def dispatch(self, request:  Request, call_next):
+#         if request.url.scheme != "https":
+#             url = request.url.replace(scheme="https")
+#             return RedirectResponse(url=url)
+#         response = await call_next(request)
+#         return response
+# app.add_middleware(HTTPSRedirectMiddleware)
 
-# Security Headers middleware
-class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        response: Response = await call_next(request)
-        response.headers["X-Frame-Options"] = "DENY"
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["Content-Security-Policy"] = "default-src 'self'"
-        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-        response.headers["Referrer-Policy"] = "no-referrer"
-        return response
-app.add_middleware(SecurityHeadersMiddleware)
+# # Security Headers middleware
+# class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+#     async def dispatch(self, request: Request, call_next):
+#         response: Response = await call_next(request)
+#         response.headers["X-Frame-Options"] = "DENY"
+#         response.headers["X-Content-Type-Options"] = "nosniff"
+#         response.headers["Content-Security-Policy"] = "default-src 'self'"
+#         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+#         response.headers["Referrer-Policy"] = "no-referrer"
+#         return response
+# app.add_middleware(SecurityHeadersMiddleware)
 
 # Exception handlers
 @app.exception_handler(Exception)
