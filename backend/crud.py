@@ -1,9 +1,10 @@
 from sqlmodel import Session, select
 
-from data_access.models import User
 from data_access.database import get_db
+from data_access.models import User
 from security.password_utils import hash_password
 from security.password_utils import verify_password as verify_hashed_password
+
 
 def get_user_by_username(db: Session, username: str):
     statement = select(User).where(User.username == username)

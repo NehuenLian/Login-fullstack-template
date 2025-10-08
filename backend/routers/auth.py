@@ -1,13 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
-from schemas import UserLogin, UserRegister
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlmodel import Session
-from data_access.database import get_db
+
 import crud
+from data_access.database import get_db
+from schemas import UserLogin, UserRegister
 from security.tokens_utils import create_access_token
 
+limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
 
 @router.post("/auth/login")
+@limiter.limit("5/minute")
 def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
     user = crud.get_user_by_username(db, user_data.username)
     if not user:
@@ -22,6 +27,7 @@ def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
 
 
 @router.post("/auth/register")
+@limiter.limit("3/minute")
 def register(request: Request, user_data: UserRegister, db: Session=Depends(get_db)):
     user_exists = crud.get_user_by_username(db, user_data.username)
     if user_exists:
