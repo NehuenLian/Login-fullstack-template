@@ -3,9 +3,9 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from sqlmodel import Session
 
-import crud
+import backend.data_access.crud as crud
 from data_access.database import get_db
-from schemas import UserLogin, UserRegister
+from backend.validations.schemas import UserLogin, UserRegister
 from security.tokens_utils import create_access_token
 
 limiter = Limiter(key_func=get_remote_address)
