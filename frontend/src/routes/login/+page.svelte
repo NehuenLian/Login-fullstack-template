@@ -3,12 +3,11 @@
 let username = "";
 let password = "";
 
+export let data;
 $: if (data?.form?.error) {
   username = "";
   password = "";
 }
-
-export let data;
 
 </script>
 

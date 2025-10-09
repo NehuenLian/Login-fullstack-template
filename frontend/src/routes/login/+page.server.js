@@ -9,7 +9,7 @@ async function handleLogin({request, cookies}) {
         return fail(400, { error: "Please fill in both username and password." });
     }
 
-    const backendResponse = await fetch('', {
+    const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify( {username, password} )
