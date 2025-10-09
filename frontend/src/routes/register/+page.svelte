@@ -4,16 +4,17 @@ let username = "";
 let password = "";
 let confirmPassword = "";
 
-function handleRegister() {
+export let data;
+$: if (data?.form?.error) {
   username = "";
   password = "";
   confirmPassword = "";
-  console.log('register');
 }
+
 </script>
 
 <main class="register-container">
-  <form class="register-form" on:submit={handleRegister}>
+  <form class="register-form" method="POST">
     <h1>Sign Up</h1>
 
     <input type="text" placeholder="Username or Email" bind:value={username} required />
@@ -27,6 +28,11 @@ function handleRegister() {
       <a href="/login">Log In</a>
     </p>
   </form>
+  
+  {#if data?.form?.error}
+    <p class="register-error">{data.form.error}</p>
+  {/if}
+
 </main>
 
 <style>
