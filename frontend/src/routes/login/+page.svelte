@@ -15,8 +15,8 @@ $: if (data?.form?.error) {
   <form class="login-form" method="POST">
     <h1>Log In</h1>
 
-    <input type="text" placeholder="Username or Email" bind:value={username} required />
-    <input type="password" placeholder="Password" bind:value={password} required />
+    <input type="text" placeholder="Username or Email" bind:value={username} name="username" required />
+    <input type="password" placeholder="Password" bind:value={password} name="password" required />
 
     <button type="submit">Log In</button>
 
