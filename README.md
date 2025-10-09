@@ -37,7 +37,7 @@ This repository is a [GitHub Template](https://docs.github.com/en/repositories/c
 Click `Use this template` on GitHub, or run:
 
 ```sh
-gh repo create my-login-app --template <this-repo-url>
+gh repo create my-login-app --template <https://github.com/NehuenLian/Login-fullstack-template>
 ```
 
 ### 2. Backend Setup
