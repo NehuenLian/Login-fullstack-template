@@ -3,15 +3,17 @@
 let username = "";
 let password = "";
 
-function handleLogin() {
-  console.log('login');
+$: if (data?.form?.error) {
   username = "";
   password = "";
 }
+
+export let data;
+
 </script>
 
 <main class="login-container">
-  <form class="login-form" on:submit={handleLogin}>
+  <form class="login-form" method="POST">
     <h1>Log In</h1>
 
     <input type="text" placeholder="Username or Email" bind:value={username} required />
@@ -24,6 +26,11 @@ function handleLogin() {
       <a href="/register">Sign Up</a>
     </p>
   </form>
+
+  {#if data?.form?.error}
+    <p class="login-error">{data.form.error}</p>
+  {/if}
+
 </main>
 
 <style>
@@ -53,6 +60,11 @@ function handleLogin() {
     background-color: #1e1e1e;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     color: #fff;
+  }
+
+  .login-error {
+    color: #ff0000;
+    font-weight: bold;
   }
 
   h1 {
