@@ -5,7 +5,6 @@
 [![SQLModel](https://img.shields.io/badge/SQLModel-0.0.25-3776ab?logo=python&logoColor=white)](https://sqlmodel.tiangolo.com/)
 [![Passlib](https://img.shields.io/badge/Passlib-1.7.4-3776ab?logo=python&logoColor=white)](https://passlib.readthedocs.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
@@ -19,16 +18,15 @@ This repository is a [GitHub Template](https://docs.github.com/en/repositories/c
 
 ## Features
 
-- 🔒 **User Registration & Login** (JWT-based authentication)
-- 🧑‍💻 **FastAPI Backend** with SQLModel ORM
-- ⚡ **SvelteKit Frontend** with modern UI
-- 🗄️ **SQLite Database** (easy to swap for other DBs)
-- 🛡️ **Password Hashing** (bcrypt via Passlib)
-- 🚦 **Rate Limiting** (SlowAPI)
-- 🌍 **CORS Support**
-- 🧪 **Ready for Testing & Extension**
-- 📝 **Swagger Docs** (protected with HTTP Basic Auth)
-- 🏷️ **Role-based Access Control** (easy to extend)
+- **User Registration & Login** (JWT-based)
+- **FastAPI Backend** with SQLModel
+- **SvelteKit Frontend** with CSS basic styles
+- **Password Hashing** (bcrypt)
+- **Rate Limiting** (SlowAPI)
+- **CORS Support**
+- **Ready for Testing & Extension**
+- **Swagger Docs** (protected with HTTP Basic Auth)
+- **Role-based Access Control** (easy to extend)
 
 ---
 
