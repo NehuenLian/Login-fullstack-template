@@ -15,7 +15,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from routers import auth
 
 app = FastAPI()
-app.include_router(auth.router)
+app.include_router(auth.router, prefix='/api')
 
 # CORS
 ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS')
