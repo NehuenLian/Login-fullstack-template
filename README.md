@@ -16,7 +16,7 @@ This repository is a [GitHub Template](https://docs.github.com/en/repositories/c
 
 | Login | Register |
 |-------|---------|
-| ![Login](./images/login-screenshot.jpg) | ![Register](./images/signup-screenshot.jpg) |
+| ![Login](./images/login_screenshot.jpg) | ![Register](./images/signup_screenshot.jpg) |
 
 ---
 
