@@ -15,7 +15,7 @@ $: if (form?.error) {
 
 <main class="login-container">
   <form class="login-form" method="POST" use:enhance>
-    <h1>Log In</h1>
+    <h1>Login</h1>
 
     <input type="text" placeholder="Username or Email" bind:value={username} name="username" required />
     <input type="password" placeholder="Password" bind:value={password} name="password" required />
