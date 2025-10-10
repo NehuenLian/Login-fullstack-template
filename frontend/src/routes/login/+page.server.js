@@ -16,8 +16,12 @@ async function handleLogin({request, cookies}) {
     });
     const responseData = await backendResponse.json();
 
+    if (backendResponse.status == 401 || backendResponse.status == 404) {
+        return fail(401, {error: "Username or password are incorrect."})
+    }
+
     if (!backendResponse.ok) {
-        return fail(backendResponse.statusText, { error: responseData.detail });
+        return fail(500, { error: "Unexpected error occurred." });
     }
 
     const access_token = responseData.access_token;

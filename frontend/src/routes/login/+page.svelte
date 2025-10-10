@@ -1,10 +1,12 @@
 <script>
+import { enhance } from '$app/forms';
 
 let username = "";
 let password = "";
 
-export let data;
-$: if (data?.form?.error) {
+export let form;
+
+$: if (form?.error) {
   username = "";
   password = "";
 }
@@ -12,7 +14,7 @@ $: if (data?.form?.error) {
 </script>
 
 <main class="login-container">
-  <form class="login-form" method="POST">
+  <form class="login-form" method="POST" use:enhance>
     <h1>Log In</h1>
 
     <input type="text" placeholder="Username or Email" bind:value={username} name="username" required />
@@ -20,15 +22,15 @@ $: if (data?.form?.error) {
 
     <button type="submit">Log In</button>
 
+    {#if form?.error}
+      <p class="login-error">{form.error}</p>
+    {/if}
+
     <p class="register-text">
       Don't have an account?
       <a href="/register">Sign Up</a>
     </p>
   </form>
-
-  {#if data?.form?.error}
-    <p class="login-error">{data.form.error}</p>
-  {/if}
 
 </main>
 
@@ -64,6 +66,9 @@ $: if (data?.form?.error) {
   .login-error {
     color: #ff0000;
     font-weight: bold;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   h1 {
