@@ -21,8 +21,12 @@ async function handleRegister({request}) {
     });
     const responseData = await backendResponse.json();
 
+    if (backendResponse.status === 409) {
+        return fail(409, {error: "Username already has taken."})
+    }
+
     if (!backendResponse.ok) {
-        return fail(backendResponse.statusText, {error: responseData.detail })
+        return fail(500, { error: "Unexpected error occurred." });
     }
 
     throw redirect(303, '/login');
@@ -31,5 +35,3 @@ async function handleRegister({request}) {
 export const actions = {
     default: handleRegister
 };
-
-
