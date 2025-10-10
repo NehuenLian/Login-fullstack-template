@@ -14,8 +14,9 @@
 
 This repository is a [GitHub Template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository), so you can use it to bootstrap new projects instantly.
 
-![Login page screenshot](./images/login-screenshot.jpg)
-![Register page screenshot](./images/signup-screenshot.jpg)
+| Login | Register |
+|-------|---------|
+| ![Login](./images/login-screenshot.jpg) | ![Register](./images/signup-screenshot.jpg) |
 
 ---
 
