@@ -26,9 +26,9 @@ async function handleLogin({request, cookies}) {
 
     const access_token = responseData.access_token;
     cookies.set('session', access_token, {
-        httpOnly: true,
+        httpOnly: false,
         path: '/',
-        maxAge: 60 * 60 * 24,
+        maxAge: 60 * 10,
     });
     
     throw redirect(303, '/dashboard')
