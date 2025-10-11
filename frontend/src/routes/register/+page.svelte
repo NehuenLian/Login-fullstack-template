@@ -5,8 +5,8 @@ let username = "";
 let password = "";
 let confirmPassword = "";
 
-export let form;
-$: if (form?.error) {
+export let data;
+$: if (data?.error) {
   username = "";
   password = "";
   confirmPassword = "";
@@ -24,8 +24,8 @@ $: if (form?.error) {
 
     <button type="submit">Sign Up</button>
 
-    {#if form?.error}
-      <p class="register-error">{form.error}</p>
+    {#if data?.error}
+      <p class="register-error">{data.error}</p>
     {/if}
 
     <p class="login-text">
