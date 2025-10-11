@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlmodel import Session
 
-import backend.data_access.crud as crud
+from data_access import crud
 from data_access.database import get_db
 
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
