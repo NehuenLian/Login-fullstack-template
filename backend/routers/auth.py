@@ -5,8 +5,8 @@ from sqlmodel import Session
 
 from data_access import crud
 from data_access.database import get_db
-from validations.schemas import UserLogin, UserRegister
 from security.tokens_utils import create_access_token
+from validations.schemas import UserLogin, UserRegister
 
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
