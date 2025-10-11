@@ -30,8 +30,8 @@ async function handleLogin({request, cookies}) {
         path: '/',
         maxAge: 60 * 60 * 24,
     });
-
-    throw redirect(303, '/')
+    
+    throw redirect(303, '/dashboard')
 }
 
 export const actions = {
