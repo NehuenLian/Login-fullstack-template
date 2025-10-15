@@ -14,7 +14,7 @@ router = APIRouter()
 @router.post("/auth/login")
 @limiter.limit("5/minute")
 def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
-    user = crud.get_user_by_username(db, user_data.username)
+    user = crud.get_user_by_email(db, user_data.email)
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
 
@@ -22,18 +22,18 @@ def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
     if not validated_password:
         raise HTTPException(status_code=401, detail="Incorrect password")
     
-    access_token = create_access_token(data={"sub" : user.username})
+    access_token = create_access_token(data={"sub" : user.email})
     return {"access_token" : access_token, "token_type" : "bearer"}
 
 
 @router.post("/auth/register")
 @limiter.limit("3/minute")
 def register(request: Request, user_data: UserRegister, db: Session=Depends(get_db)):
-    user_exists = crud.get_user_by_username(db, user_data.username)
+    user_exists = crud.get_user_by_email(db, user_data.email)
     if user_exists:
-        raise HTTPException(status_code=409, detail="Username already has taken.")
+        raise HTTPException(status_code=409, detail="This email is already in use.")
     
-    user_created = crud.create_user(db, user_data.username, user_data.password)
+    user_created = crud.create_user(db, user_data.email, user_data.password)
     if not user_created:
         raise HTTPException(status_code=500, detail="Couldn't create account.")
     
