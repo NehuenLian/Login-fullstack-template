@@ -2,7 +2,7 @@ import { fail, redirect } from "@sveltejs/kit";
 
 async function handleRegister({request}) {
     const formData = await request.formData();
-    const username = formData.get('username');
+    const email = formData.get('email');
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
 
@@ -10,19 +10,19 @@ async function handleRegister({request}) {
         return fail(400, {error: "Password and Confirmation password aren't identic."})
     }
 
-    if (!username || !password || !confirmPassword) {
-        return fail(400, { error: "Please fill username, password and confirmation password." });
+    if (!email || !password || !confirmPassword) {
+        return fail(400, { error: "Please fill email, password and confirmation password." });
     }
 
     const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/register', {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify( {username, password })
+        body: JSON.stringify( {email, password })
     });
     const responseData = await backendResponse.json();
 
     if (backendResponse.status === 409) {
-        return fail(409, {error: "Username already has taken."})
+        return fail(409, {error: "This email is already in use."})
     }
 
     if (!backendResponse.ok) {

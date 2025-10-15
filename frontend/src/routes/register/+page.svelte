@@ -1,13 +1,13 @@
 <script>
 import { enhance } from '$app/forms';
 
-let username = "";
+let email = "";
 let password = "";
 let confirmPassword = "";
 
 export let data;
 $: if (data?.error) {
-  username = "";
+  email = "";
   password = "";
   confirmPassword = "";
 }
@@ -18,7 +18,7 @@ $: if (data?.error) {
   <form class="register-form" method="POST" use:enhance>
     <h1>Sign Up</h1>
 
-    <input type="text" placeholder="Username or Email" bind:value={username} name="username" required />
+    <input type="text" placeholder="Email" bind:value={email} name="email" required />
     <input type="password" placeholder="Password" bind:value={password} name="password" required />
     <input type="password" placeholder="Confirm Password" bind:value={confirmPassword} name="confirmPassword" required />
 
