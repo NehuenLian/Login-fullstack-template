@@ -9,6 +9,10 @@ async function handleLogin({request, cookies}) {
         return fail(400, { error: "Please fill in both email and password." });
     }
 
+    if (!validateEmail(email)) {
+        return fail(400, { error: "Please enter a valid email." })
+    }
+
     const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
@@ -37,3 +41,8 @@ async function handleLogin({request, cookies}) {
 export const actions = {
     default: handleLogin
 };
+
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
