@@ -6,12 +6,12 @@ async function handleRegister({request}) {
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
 
-    if (password !== confirmPassword) {
-        return fail(400, {error: "Password and Confirmation password aren't identic."})
-    }
-
     if (!email || !password || !confirmPassword) {
         return fail(400, { error: "Please fill email, password and confirmation password." });
+    }
+
+    if (password !== confirmPassword) {
+        return fail(400, {error: "Password and Confirmation password aren't identic."})
     }
 
     const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/register', {
