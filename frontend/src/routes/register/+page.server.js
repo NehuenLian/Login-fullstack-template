@@ -24,6 +24,10 @@ async function handleRegister({request}) {
     if (backendResponse.status === 409) {
         return fail(409, { error: "This email is already in use." })
     }
+    
+    if (backendResponse.status === 400) {
+        return fail(400, { error: "Email or password format invalid." })
+    }
 
     if (!backendResponse.ok) {
         return fail(500, { error: "Unexpected error occurred." });
