@@ -4,21 +4,21 @@ from fastapi.testclient import TestClient
 def test_register_endpoint(client):
 
     # Test register success
-    response = client.post("/api/auth/register", json={"email" : "testuser@example.com", "password" : "testpass123"})
+    response = client.post("/api/auth/register", json={"email" : "testuser@example.com", "password" : "Testpass123"})
     assert response.status_code == 200
     assert response.json() == {"message" : "Account created."}
 
     # Test user exists
-    response = client.post("/api/auth/register", json={"email" : "testuser@example.com", "password" : "testpass123"})
+    response = client.post("/api/auth/register", json={"email" : "testuser@example.com", "password" : "Testpass123"})
     assert response.status_code == 409
 
 
 def test_login_endpoint(client):
 
-    client.post("/api/auth/register", json={"email" : "testuser@example.com",  "password" : "testpass123"})
+    client.post("/api/auth/register", json={"email" : "testuser@example.com",  "password" : "Testpass123"})
 
     # Test login sucess
-    response = client.post("/api/auth/login", json={"email" : "testuser@example.com", "password" : "testpass123"})
+    response = client.post("/api/auth/login", json={"email" : "testuser@example.com", "password" : "Testpass123"})
     assert response.status_code == 200
     assert "access_token" in response.json()
     assert "token_type" in response.json()
@@ -29,5 +29,5 @@ def test_login_endpoint(client):
     assert response.status_code == 401
 
     # Test user doesn't exist
-    response = client.post("/api/auth/login", json={"email" : "nonexistent@example.com", "password" : "testpass123"})
+    response = client.post("/api/auth/login", json={"email" : "nonexistent@example.com", "password" : "Testpass123"})
     assert response.status_code == 404
