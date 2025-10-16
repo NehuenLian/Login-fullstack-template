@@ -4,6 +4,7 @@ import { enhance } from '$app/forms';
 let email = "";
 let password = "";
 
+// data returned from server
 export let data;
 
 $: if (data?.error) {
@@ -19,8 +20,7 @@ $: if (data?.error) {
 
     <input type="text" placeholder="Email" bind:value={email} name="email" required />
     <input type="password" placeholder="Password" bind:value={password} name="password" required />
-
-    <button type="submit">Log In</button>
+    <button type="submit" disabled={!email || !password} >Log In</button>
 
     {#if data?.error}
       <p class="login-error">{data.error}</p>
@@ -64,7 +64,7 @@ $: if (data?.error) {
   }
 
   .login-error {
-    color: #ff0000;
+    color: #FF5C5C;
     font-weight: bold;
     text-align: center;
     margin-top: 0.5rem;
@@ -111,6 +111,12 @@ $: if (data?.error) {
 
   button:hover {
     background-color: #4752c4;
+  }
+
+  button:disabled {
+    background-color: #8f97f2;
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   .register-text {
