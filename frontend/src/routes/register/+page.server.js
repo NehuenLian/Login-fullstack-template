@@ -11,7 +11,7 @@ async function handleRegister({request}) {
     }
 
     if (password !== confirmPassword) {
-        return fail(400, {error: "Password and Confirmation password aren't identic."})
+        return fail(400, { error: "Password and Confirmation password aren't identic." })
     }
 
     const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/register', {
@@ -22,7 +22,7 @@ async function handleRegister({request}) {
     const responseData = await backendResponse.json();
 
     if (backendResponse.status === 409) {
-        return fail(409, {error: "This email is already in use."})
+        return fail(409, { error: "This email is already in use." })
     }
 
     if (!backendResponse.ok) {
