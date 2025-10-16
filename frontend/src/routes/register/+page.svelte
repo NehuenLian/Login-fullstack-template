@@ -103,7 +103,7 @@ $: if (data?.error) {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 350px;
+    max-width: 350px;
     padding: 2rem;
     border-radius: 12px;
     background-color: #1e1e1e;
