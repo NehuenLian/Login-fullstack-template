@@ -1,21 +1,21 @@
 <script>
 import { enhance } from '$app/forms';
 
+let errors = [];
+
 let email = "";
-let emailError = "";
-
 let password = "";
-let passwordError = "";
-
 let confirmPassword = "";
-let confirmPasswordError = "";
 
 function validatePasswordLenght(password) {
   return password.length >= 8;
 }
 
-function validatePasswordUppercase(password) {
-  return /[A-Z]/.test(password);
+function validatePasswordCase(password) {
+  const has_upper = /[A-Z]/.test(password);
+  const has_lower = /[a-z]/.test(password);
+
+  return has_upper && has_lower
 }
 
 function validateConfirmPassword(password, confirmPassword) {
@@ -27,38 +27,21 @@ function validateEmail(email) {
   return regex.test(email);
 }
 
-// show password errors
+// show errors
 $: {
-  if (!password) {
-    passwordError = '';
-  } else if (!validatePasswordLenght(password)) {
-    passwordError = 'The password must be at least 8 characters long.'
-  } else if (!validatePasswordUppercase(password)) {
-    passwordError = 'Password must have at least one uppercase letter.'
-  } else {
-    passwordError = '';
+  errors = [];
+  if (email && !validateEmail(email)) {
+    errors.push('• Please enter a valid email address.');
   }
-}
 
-// show confirm password errors
-$: {
-  if (!confirmPassword) {
-    confirmPasswordError = '';
-  } else if (!validateConfirmPassword(password, confirmPassword)) {
-    confirmPasswordError = 'Passwords must be identical.'
-  } else {
-    confirmPasswordError = '';
+  if (password && !validatePasswordLenght(password)) {
+    errors.push('• The password must be at least 8 characters long.');
+  } else if (password && !validatePasswordCase(password)) {
+    errors.push('• Password must have at least one uppercase and lowercase letter.');
   }
-}
 
-// show email errors
-$: {
-  if (!email) {
-    emailError = '';
-  } else if (!validateEmail(email)) {
-    emailError = 'Please enter a valid email address.';
-  } else {
-    emailError = '';
+  if (confirmPassword && !validateConfirmPassword(password, confirmPassword)) {
+    errors.push('• Passwords must be identical.');
   }
 }
 
@@ -81,17 +64,11 @@ $: if (data?.error) {
     <input type="password" placeholder="Confirm Password" bind:value={confirmPassword} name="confirmPassword" required />
 
     <!--Fields validations-->
-    {#if passwordError}
-      <p class="register-error">{passwordError}</p>
-    {/if}
-    {#if confirmPasswordError}
-      <p class="register-error">{confirmPasswordError}</p>
-    {/if}
-    {#if emailError}
-      <p class="register-error">{emailError}</p>
-    {/if}
+    {#each errors as error}
+      <p class="register-error">{error}</p>
+    {/each}
 
-    <button type="submit" disabled={!!passwordError || !!confirmPasswordError || !!emailError}>Sign Up</button>
+    <button type="submit" disabled={errors.length > 0}>Sign Up</button>
     
     {#if data?.error}
       <p class="register-error">{data.error}</p>
@@ -132,6 +109,7 @@ $: if (data?.error) {
     background-color: #1e1e1e;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     color: #fff;
+    width: 90%;
   }
 
   h1 {
@@ -185,9 +163,12 @@ $: if (data?.error) {
   .register-error {
     color: #FF5C5C;
     font-weight: bold;
-    text-align: center;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 14px;
+    text-align: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
   }
 
   .login-text {
