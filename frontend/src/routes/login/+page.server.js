@@ -30,7 +30,7 @@ async function handleLogin({request, cookies}) {
 
     const access_token = responseData.access_token;
     cookies.set('session', access_token, {
-        httpOnly: false,
+        httpOnly: true,
         path: '/',
         maxAge: 60 * 10,
     });
