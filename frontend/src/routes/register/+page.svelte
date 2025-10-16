@@ -2,9 +2,67 @@
 import { enhance } from '$app/forms';
 
 let email = "";
-let password = "";
-let confirmPassword = "";
+let emailError = "";
 
+let password = "";
+let passwordError = "";
+
+let confirmPassword = "";
+let confirmPasswordError = "";
+
+function validatePasswordLenght(password) {
+  return password.length >= 8;
+}
+
+function validatePasswordUppercase(password) {
+  return /[A-Z]/.test(password);
+}
+
+function validateConfirmPassword(password, confirmPassword) {
+  return password === confirmPassword;
+}
+
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+// show password errors
+$: {
+  if (!password) {
+    passwordError = '';
+  } else if (!validatePasswordLenght(password)) {
+    passwordError = 'The password must be at least 8 characters long.'
+  } else if (!validatePasswordUppercase(password)) {
+    passwordError = 'Password must have at least one uppercase letter.'
+  } else {
+    passwordError = '';
+  }
+}
+
+// show confirm password errors
+$: {
+  if (!confirmPassword) {
+    confirmPasswordError = '';
+  } else if (!validateConfirmPassword(password, confirmPassword)) {
+    confirmPasswordError = 'Passwords must be identical.'
+  } else {
+    confirmPasswordError = '';
+  }
+}
+
+// show email errors
+$: {
+  if (!email) {
+    emailError = '';
+  } else if (!validateEmail(email)) {
+    emailError = 'Please enter a valid email address.';
+  } else {
+    emailError = '';
+  }
+}
+
+// data returned from server
 export let data;
 $: if (data?.error) {
   email = "";
@@ -22,8 +80,19 @@ $: if (data?.error) {
     <input type="password" placeholder="Password" bind:value={password} name="password" required />
     <input type="password" placeholder="Confirm Password" bind:value={confirmPassword} name="confirmPassword" required />
 
-    <button type="submit">Sign Up</button>
+    <!--Fields validations-->
+    {#if passwordError}
+      <p class="register-error">{passwordError}</p>
+    {/if}
+    {#if confirmPasswordError}
+      <p class="register-error">{confirmPasswordError}</p>
+    {/if}
+    {#if emailError}
+      <p class="register-error">{emailError}</p>
+    {/if}
 
+    <button type="submit" disabled={!!passwordError || !!confirmPasswordError || !!emailError}>Sign Up</button>
+    
     {#if data?.error}
       <p class="register-error">{data.error}</p>
     {/if}
@@ -107,8 +176,14 @@ $: if (data?.error) {
     background-color: #4752c4;
   }
 
+  button:disabled {
+    background-color: #8f97f2;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
   .register-error {
-    color: #ff0000;
+    color: #FF5C5C;
     font-weight: bold;
     text-align: center;
     margin-top: 0.5rem;
