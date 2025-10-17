@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateEmail, validatePasswordLenght, validatePasswordCase, validatePasswordSymbols, 
+import { validateEmail, validatePasswordLength, validatePasswordCase, validatePasswordSymbols, 
   validateConfirmPassword } from '$lib/utils/validations.js';
 
 describe('Email validation', () => {
@@ -14,8 +14,8 @@ describe('Email validation', () => {
 
 describe('Password validation', () => {
     it('must validate max lenght (>= 8)', () => {
-        expect(validatePasswordLenght('short7')).toBe(false); // chars
-        expect(validatePasswordLenght('longpassword8')).toBe(true) // 13 chars
+        expect(validatePasswordLength('short7')).toBe(false); // chars
+        expect(validatePasswordLength('longpassword8')).toBe(true) // 13 chars
     });
 
     it('must require upper and lower', () => {

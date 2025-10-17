@@ -3,7 +3,7 @@ export function validateEmail(email) {
   return regex.test(email);
 }
 
-export function validatePasswordLenght(password) {
+export function validatePasswordLength(password) {
   return password.length >= 8;
 }
 
