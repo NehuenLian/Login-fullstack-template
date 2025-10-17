@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateEmail, validatePasswordCase, validatePasswordLenght, 
+import { validateEmail, validatePasswordLenght, validatePasswordCase, validatePasswordSymbols, 
   validateConfirmPassword } from '$lib/utils/validations.js';
 
 describe('Email validation', () => {
@@ -22,6 +22,10 @@ describe('Password validation', () => {
         expect(validatePasswordCase('onlylowercase')).toBe(false);
         expect(validatePasswordCase('ONLYUPPERCASE')).toBe(false);
         expect(validatePasswordCase('CorrectPassword')).toBe(true);
+    });
+    it('must require one symbol', () => {
+        expect(validatePasswordSymbols('Nosymbolpass')).toBe(false);
+        expect(validatePasswordSymbols('Symbolpass%$#')).toBe(true);
     });
 })
 
