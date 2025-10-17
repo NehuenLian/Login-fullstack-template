@@ -1,7 +1,7 @@
 <script>
 import { enhance } from '$app/forms';
 import { validateEmail, validatePasswordCase, validatePasswordLenght, 
-  validateConfirmPassword } from '$lib/utils/validations.js'
+  validateConfirmPassword } from '$lib/utils/validations.js';
 
 let errors = [];
 
