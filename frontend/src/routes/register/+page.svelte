@@ -1,6 +1,6 @@
 <script>
 import { enhance } from '$app/forms';
-import { validateEmail, validatePasswordCase, validatePasswordLenght, 
+import { validateEmail, validatePasswordLenght, validatePasswordCase, validatePasswordSymbols, 
   validateConfirmPassword } from '$lib/utils/validations.js';
 
 let errors = [];
@@ -20,6 +20,8 @@ $: {
     errors.push('• The password must be at least 8 characters long.');
   } else if (password && !validatePasswordCase(password)) {
     errors.push('• Password must have at least one uppercase and lowercase letter.');
+  } else if (password && !validatePasswordSymbols(password)) {
+    errors.push('• Password must have at least one symbol.')
   }
 
   if (confirmPassword && !validateConfirmPassword(password, confirmPassword)) {
