@@ -1,31 +1,13 @@
 <script>
 import { enhance } from '$app/forms';
+import { validateEmail, validatePasswordCase, validatePasswordLenght, 
+  validateConfirmPassword } from '$lib/utils/validations.js'
 
 let errors = [];
 
 let email = "";
 let password = "";
 let confirmPassword = "";
-
-function validatePasswordLenght(password) {
-  return password.length >= 8;
-}
-
-function validatePasswordCase(password) {
-  const has_upper = /[A-Z]/.test(password);
-  const has_lower = /[a-z]/.test(password);
-
-  return has_upper && has_lower
-}
-
-function validateConfirmPassword(password, confirmPassword) {
-  return password === confirmPassword;
-}
-
-function validateEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-}
 
 // show errors
 $: {
