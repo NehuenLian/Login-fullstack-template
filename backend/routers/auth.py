@@ -1,13 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import JSONResponse
+from jose import jwt, JWTError, ExpiredSignatureError
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from sqlmodel import Session
+import os
 
 from data_access import crud
 from data_access.database import get_db
-from security.tokens_utils import create_access_token
+from security.tokens_utils import create_access_token, create_refresh_token
+from validations.general_validations import (validate_email,
+                                             validate_password_conditions)
 from validations.schemas import UserLogin, UserRegister
-from validations.general_validations import validate_email, validate_password_conditions
 
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
@@ -29,7 +33,20 @@ def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
         raise HTTPException(status_code=401, detail="Incorrect password")
     
     access_token = create_access_token(data={"sub" : user.email})
-    return {"access_token" : access_token, "token_type" : "bearer"}
+    refresh_token = create_refresh_token({"sub" : user.email})
+
+    response = JSONResponse({"access_token" : access_token, "token_type" : "bearer"})
+    
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=60*60*24*7,
+        path="/"
+    )
+    return response
 
 
 @router.post("/auth/register")
@@ -54,3 +71,26 @@ def register(request: Request, user_data: UserRegister, db: Session=Depends(get_
     
     return {"message" : "Account created."}
 
+
+@router.post("/auth/refresh")
+def refresh_token(request: Request):
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    ALGORITHM = os.getenv("ALGORITHM")
+
+    refresh_token = request.cookies.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="Missing refresh token")
+    
+    try:
+        payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
+        if payload.get("type") != "refresh":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Refresh token expired")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    user_email = payload.get("sub")
+    new_access_token = create_access_token({"sub" : user_email})
+    
+    return {"access_token" : new_access_token, "token_type" : "bearer"}
