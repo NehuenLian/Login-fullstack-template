@@ -16,7 +16,8 @@ async function handleLogin({request, cookies}) {
     const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
-        body: JSON.stringify( {email, password} )
+        body: JSON.stringify( {email, password} ),
+        credentials: 'include',
     });
     const responseData = await backendResponse.json();
 
@@ -26,13 +27,13 @@ async function handleLogin({request, cookies}) {
 
     if (!backendResponse.ok) {
         return fail(500, { error: "Unexpected error occurred." });
-    }
+    }   
 
     const access_token = responseData.access_token;
     cookies.set('session', access_token, {
         httpOnly: true,
         path: '/',
-        maxAge: 60 * 10,
+        maxAge: 60 * 60,
     });
     
     throw redirect(303, '/dashboard')
