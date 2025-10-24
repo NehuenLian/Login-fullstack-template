@@ -3,23 +3,29 @@ import { enhance } from '$app/forms';
 
 let email = "";
 let password = "";
+let rememberMe = false;
 
 // data returned from server
 export let data;
 
 $: if (data?.error) {
-  email = "";
   password = "";
 }
 
 </script>
 
 <main class="login-container">
-  <form class="login-form" method="POST">
+  <form class="login-form" method="POST" use:enhance>
     <h1>Login</h1>
 
     <input type="text" placeholder="Email" bind:value={email} name="email" required />
     <input type="password" placeholder="Password" bind:value={password} name="password" required />
+    
+    <label class="remember-me">
+      <input type="checkbox" bind:checked={rememberMe} name="rememberMe">
+      Remember me
+    </label>
+
     <button type="submit" disabled={!email || !password} >Log In</button>
 
     {#if data?.error}

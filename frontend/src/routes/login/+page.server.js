@@ -4,6 +4,7 @@ async function handleLogin({request, cookies}) {
     const formData = await request.formData();
     const email = formData.get('email');
     const password = formData.get('password');
+    const rememberMe = formData.get('rememberMe') === 'on';
 
     if (!email || !password) {
         return fail(400, { error: "Please fill in both email and password." });
@@ -33,7 +34,7 @@ async function handleLogin({request, cookies}) {
     cookies.set('session', access_token, {
         httpOnly: true,
         path: '/',
-        maxAge: 60 * 60,
+        maxAge: rememberMe ? 60 * 60 * 24 * 30 : 60 * 60,
     });
     
     throw redirect(303, '/dashboard')
