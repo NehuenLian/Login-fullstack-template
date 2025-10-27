@@ -18,7 +18,10 @@ export async function load({ cookies, fetch }) {
 
     if (needRefresh) {
         const res = await fetch('http://127.0.0.1:8000/api/auth/refresh', { 
-            method: 'POST', credentials: 'include' 
+            method: 'POST',
+            headers: {
+                cookie: cookies.get('session') ? `session=${cookies.get('session')}` : ''
+            }
         });
 
         if (res.ok) {
