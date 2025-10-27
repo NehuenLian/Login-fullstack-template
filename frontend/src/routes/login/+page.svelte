@@ -1,9 +1,18 @@
 <script>
 import { enhance } from '$app/forms';
+import eyeOpen from '$lib/assets/eye-open.svg';
+import eyeClosed from '$lib/assets/eye-closed.svg';
 
 let email = "";
 let password = "";
 let rememberMe = false;
+let showPassword = false;
+let passwordInput;
+
+function togglePassword() {
+  showPassword = !showPassword;
+  passwordInput.type = showPassword ? 'text' : 'password';
+}
 
 // data returned from server
 export let data;
@@ -17,10 +26,15 @@ $: if (data?.error) {
 <main class="login-container">
   <form class="login-form" method="POST" use:enhance>
     <h1>Login</h1>
-
     <input type="text" placeholder="Email" bind:value={email} name="email" required />
-    <input type="password" placeholder="Password" bind:value={password} name="password" required />
     
+    <div class="password-wrapper">
+      <input bind:this={passwordInput} type="password" placeholder="Password" bind:value={password} name="password" required />
+      <button type="button" class="showPassword" on:click={togglePassword}>
+        <img src={showPassword ? eyeClosed : eyeOpen} alt="Show Password" />
+      </button>
+    </div>
+
     <label class="remember-me">
       <input type="checkbox" bind:checked={rememberMe} name="rememberMe">
       Remember me
@@ -102,6 +116,34 @@ $: if (data?.error) {
     outline: none;
     border-color: #5865f2;
     background-color: #3a3a3a;
+  }
+
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 2.5em; /* espacio para el botón */
+    box-sizing: border-box;
+  }
+
+  .showPassword {
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .showPassword:hover {
+    background-color: #cfcfcf;
   }
 
   button {

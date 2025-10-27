@@ -3,11 +3,22 @@ import { enhance } from '$app/forms';
 import { validateEmail, validatePasswordLength, validatePasswordCase, validatePasswordSymbols, 
   validateConfirmPassword } from '$lib/utils/validations.js';
 
+import eyeOpen from '$lib/assets/eye-open.svg';
+import eyeClosed from '$lib/assets/eye-closed.svg';
+
 let errors = [];
 
 let email = "";
 let password = "";
 let confirmPassword = "";
+
+let showPassword = false;
+let passwordInput;
+
+function togglePassword() {
+  showPassword = !showPassword;
+  passwordInput.type = showPassword ? 'text' : 'password';
+}
 
 // show errors
 $: {
@@ -44,7 +55,14 @@ $: if (data?.error) {
     <h1>Sign Up</h1>
 
     <input type="text" placeholder="Email" bind:value={email} name="email" required />
-    <input type="password" placeholder="Password" bind:value={password} name="password" required />
+    
+    <div class="password-wrapper">
+      <input bind:this={passwordInput} type="password" placeholder="Password" bind:value={password} name="password" required />
+      <button type="button" class="showPassword" on:click={togglePassword}>
+        <img src={showPassword ? eyeClosed : eyeOpen} alt="Show Password" />
+      </button>
+    </div>
+
     <input type="password" placeholder="Confirm Password" bind:value={confirmPassword} name="confirmPassword" required />
 
     <!--Fields validations-->
@@ -52,7 +70,7 @@ $: if (data?.error) {
       <p class="register-error">{error}</p>
     {/each}
 
-    <button type="submit" disabled={errors.length > 0}>Sign Up</button>
+    <button type="submit" disabled={errors.length > 0 || !email && !password && !confirmPassword}>Sign Up</button>
     
     {#if data?.error}
       <p class="register-error">{data.error}</p>
@@ -121,6 +139,34 @@ $: if (data?.error) {
     outline: none;
     border-color: #5865f2;
     background-color: #3a3a3a;
+  }
+
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 2.5em; /* espacio para el botón */
+    box-sizing: border-box;
+  }
+
+  .showPassword {
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .showPassword:hover {
+    background-color: #cfcfcf;
   }
 
   button {
