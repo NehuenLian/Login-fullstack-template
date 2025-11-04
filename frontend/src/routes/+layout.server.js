@@ -12,7 +12,7 @@ export async function load({ cookies, fetch }) {
                 needRefresh = false;
             }
         } catch {
-             needRefresh = true;
+            needRefresh = true;
         }
     }
 
