@@ -1,6 +1,23 @@
+function getStoredToken() {
+    if (typeof window === 'undefined') return null;
+
+    return sessionStorage.getItem('access_token');
+}
+
+function setStoredToken(token) {
+    if (typeof window === 'undefined') return;
+    sessionStorage.setItem('access_token', token);
+}
 
 export async function fetchWithApi(url, options = {}) {
-    let res = await fetch(url, { ...options, credentials: 'include', });
+    const token = getStoredToken(); // get sessionStorage token
+
+    let res = await fetch(url, { ...options, credentials: 'include', 
+        headers: {
+            ...options.headers,
+            ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+        }
+    });
 
     if (res.status === 401) {
         const errorData = await res.json();
@@ -11,17 +28,26 @@ export async function fetchWithApi(url, options = {}) {
         
         if (errorMessages.includes(errorData.detail)) {
 
-            const refreshRes = await fetch('http://127.0.0.1:8000/api/auth/refresh', 
+            const refreshRes = await fetch('http://localhost:8000/api/auth/refresh', 
             { method: 'POST', credentials: 'include'});
 
             if (refreshRes.ok) {
-                res = await fetch(url, { ...options,  credentials: 'include' });
+                const data = await refreshRes.json();
+                const newAccessToken = data.access_token;
+                setStoredToken(newAccessToken);
+                
+                res = await fetch(url, { ...options,  credentials: 'include',
+                    headers: {
+                        ...options.headers,
+                        'Authorization': 'Bearer ' + newAccessToken
+                    }
+                });
             } 
             else {
-                throw new Error('Session expired');
+                window.location.href = '/login';
+                return;
             }
         } 
-
     }
     return res;
 }

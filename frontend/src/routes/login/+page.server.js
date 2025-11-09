@@ -20,7 +20,6 @@ async function handleLogin({request, cookies}) {
         body: JSON.stringify( {email, password} ),
         credentials: 'include',
     });
-    const responseData = await backendResponse.json();
 
     if (backendResponse.status == 401 || backendResponse.status == 404) {
         return fail(401, {error: "Email or password are incorrect."})
@@ -30,14 +29,16 @@ async function handleLogin({request, cookies}) {
         return fail(500, { error: "Unexpected error occurred." });
     }   
 
-    const access_token = responseData.access_token;
-    cookies.set('session', access_token, {
+    const responseData = await backendResponse.json();
+    const refresh_token = responseData.refresh_token;
+    cookies.set('refresh_token', refresh_token, { // guardamos refresh token en el navegador
         httpOnly: true,
         path: '/',
         maxAge: rememberMe ? 60 * 60 * 24 * 30 : 60 * 60,
     });
+
+    return { success: true, access_token: responseData.access_token} // retornamos access_token para guardarlo en sessionStorage desde el cliente
     
-    throw redirect(303, '/dashboard')
 }
 
 export const actions = {

@@ -35,19 +35,12 @@ def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
     access_token = create_access_token(data={"sub" : user.email})
     refresh_token = create_refresh_token({"sub" : user.email})
 
-    response = JSONResponse({"access_token" : access_token, "token_type" : "bearer"})
+    return {
+        "access_token" : access_token,
+        "refresh_token" : refresh_token,
+        "token_type" : "bearer"
+        }
     
-    response.set_cookie(
-        key="refresh_token",
-        value=refresh_token,
-        httponly=True,
-        secure=True,
-        samesite="lax",
-        max_age=60*60*24*7,
-        path="/"
-    )
-    return response
-
 
 @router.post("/auth/register")
 @limiter.limit("3/minute")

@@ -3,28 +3,43 @@ import { enhance } from '$app/forms';
 import eyeOpen from '$lib/assets/eye-open.svg';
 import eyeClosed from '$lib/assets/eye-closed.svg';
 
+import { goto } from '$app/navigation';
+import { browser } from '$app/environment';
+
 let email = "";
 let password = "";
 let rememberMe = false;
 let showPassword = false;
 let passwordInput;
 
+export let form;
+
 function togglePassword() {
   showPassword = !showPassword;
   passwordInput.type = showPassword ? 'text' : 'password';
 }
 
-// data returned from server
-export let data;
+// get data from server
+async function handleSubmit() {
+  return async ({ result }) => {
+    if (result.type === 'success') {
+      
+      if (browser && result.data?.access_token) {
 
-$: if (data?.error) {
-  password = "";
+        sessionStorage.setItem('access_token', result.data.access_token);
+      }
+      goto('/dashboard');
+    }
+    else if (result.type === 'failure') {
+      password = "";
+    }
+  };
 }
 
 </script>
 
 <main class="login-container">
-  <form class="login-form" method="POST" use:enhance>
+  <form class="login-form" method="POST" use:enhance={handleSubmit}>
     <h1>Login</h1>
     <input type="text" placeholder="Email" bind:value={email} name="email" required />
     
@@ -42,8 +57,8 @@ $: if (data?.error) {
 
     <button type="submit" disabled={!email || !password} >Log In</button>
 
-    {#if data?.error}
-      <p class="login-error">{data.error}</p>
+    {#if form?.error}
+      <p class="login-error">{form.error}</p>
     {/if}
 
     <p class="register-text">
