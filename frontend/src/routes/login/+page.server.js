@@ -31,13 +31,13 @@ async function handleLogin({request, cookies}) {
 
     const responseData = await backendResponse.json();
     const refresh_token = responseData.refresh_token;
-    cookies.set('refresh_token', refresh_token, { // guardamos refresh token en el navegador
+    cookies.set('refresh_token', refresh_token, { 
         httpOnly: true,
         path: '/',
         maxAge: rememberMe ? 60 * 60 * 24 * 30 : 60 * 60,
     });
 
-    return { success: true, access_token: responseData.access_token} // retornamos access_token para guardarlo en sessionStorage desde el cliente
+    return { success: true, access_token: responseData.access_token}
     
 }
 
