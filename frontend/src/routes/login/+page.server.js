@@ -37,7 +37,7 @@ async function handleLogin({request, cookies}) {
         maxAge: rememberMe ? 60 * 60 * 24 * 30 : 60 * 60,
     });
 
-    return { success: true, access_token: responseData.access_token}
+    return { success: true, access_token: responseData.access_token }
     
 }
 
