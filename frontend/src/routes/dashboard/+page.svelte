@@ -7,6 +7,9 @@
 <div class="welcome">
     <h1>Test Page</h1>
     <p>This page can only be accessed if you are logged in.</p>
+    <form method="POST" action="/logout">
+      <button class="logout-button" type="submit">Logout</button>
+    </form>
 </div>
 
 <style>
@@ -40,5 +43,21 @@
     font-size: 1rem;
     color: #fff;
   }
+
+  .logout-button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #5865f2;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .logout-button:hover {
+    background-color: #4752c4;
+  }
+  
 
 </style>
