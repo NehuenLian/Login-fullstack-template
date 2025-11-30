@@ -21,7 +21,7 @@ function togglePassword() {
 
 // get data from server
 async function handleSubmit() {
-  return async ({ result }) => {
+  return async ({ result, update }) => {
     if (result.type === 'success') {
       
       if (browser && result.data?.access_token) {
@@ -32,6 +32,7 @@ async function handleSubmit() {
     }
     else if (result.type === 'failure') {
       password = "";
+      await update();
     }
   };
 }
