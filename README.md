@@ -1,8 +1,8 @@
 # 🍒 Fullstack Login Template
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.118.0-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![SvelteKit](https://img.shields.io/badge/SvelteKit-2.43.2-ff3e00?logo=svelte&logoColor=white)](https://kit.svelte.dev/)
-[![SQLModel](https://img.shields.io/badge/SQLModel-0.0.25-3776ab?logo=python&logoColor=white)](https://sqlmodel.tiangolo.com/)
+[![SQLModel](https://img.shields.io/badge/SQLModel-0.0.14-3776ab?logo=python&logoColor=white)](https://sqlmodel.tiangolo.com/)
 [![Passlib](https://img.shields.io/badge/Passlib-1.7.4-3776ab?logo=python&logoColor=white)](https://passlib.readthedocs.io/)
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
 
