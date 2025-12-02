@@ -3,7 +3,7 @@ import os
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from data_access import crud
 from data_access.database import get_db
@@ -13,7 +13,7 @@ ALGORITHM = os.getenv('JWT_ALGORITHM', 'HS256')
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials.",
@@ -27,14 +27,14 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     except JWTError:
         raise credentials_exception
     
-    user = crud.get_user_by_email(db, email)
+    user = await crud.get_user_by_email(db, email)
     if user is None:
         raise credentials_exception
     return user
 
 
 def require_role(required_role: str):
-    def role_checker(current_user = Depends(get_current_user)):
+    async def role_checker(current_user = Depends(get_current_user)):
         if current_user.role != required_role:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
