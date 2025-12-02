@@ -11,7 +11,7 @@ import pytest_asyncio
 from data_access.database import get_db
 from main import app
 
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"  # SQLite en memoria para tests
+DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 async_engine = create_async_engine(
     DATABASE_URL,
