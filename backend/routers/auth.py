@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from jose import jwt, JWTError, ExpiredSignatureError
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from sqlmodel import Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 import os
 
 from data_access import crud
@@ -18,13 +18,13 @@ router = APIRouter()
 
 @router.post("/auth/login")
 @limiter.limit("5/minute")
-def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
+async def login(request: Request, user_data: UserLogin, db: AsyncSession=Depends(get_db)):
 
     email_valid = validate_email(user_data.email)
     if not email_valid: 
         raise HTTPException(status_code=400, detail="Invalid email format.")
 
-    user = crud.get_user_by_email(db, user_data.email)
+    user = await crud.get_user_by_email(db, user_data.email)
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
 
@@ -44,7 +44,7 @@ def login(request: Request, user_data: UserLogin, db: Session=Depends(get_db)):
 
 @router.post("/auth/register")
 @limiter.limit("3/minute")
-def register(request: Request, user_data: UserRegister, db: Session=Depends(get_db)):
+async def register(request: Request, user_data: UserRegister, db: AsyncSession=Depends(get_db)):
 
     email_valid = validate_email(user_data.email)
     if not email_valid: 
@@ -54,11 +54,11 @@ def register(request: Request, user_data: UserRegister, db: Session=Depends(get_
     if not password_valid:
         raise HTTPException(status_code=400, detail="Invalid password format.")
 
-    user_exists = crud.get_user_by_email(db, user_data.email)
+    user_exists = await crud.get_user_by_email(db, user_data.email)
     if user_exists:
         raise HTTPException(status_code=409, detail="This email is already in use.")
     
-    user_created = crud.create_user(db, user_data.email, user_data.password)
+    user_created = await crud.create_user(db, user_data.email, user_data.password)
     if not user_created:
         raise HTTPException(status_code=500, detail="Couldn't create account.")
     
