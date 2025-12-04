@@ -1,4 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
+import { PUBLIC_API_URL } from '$env/static/public';
+
+const API_URL = PUBLIC_API_URL;
 
 async function handleLogin({request, cookies}) {
     const formData = await request.formData();
@@ -14,7 +17,7 @@ async function handleLogin({request, cookies}) {
         return fail(400, { error: "Please enter a valid email." })
     }
 
-    const backendResponse = await fetch('http://127.0.0.1:8000/api/auth/login', {
+    const backendResponse = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify( {email, password} ),
