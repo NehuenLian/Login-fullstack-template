@@ -1,7 +1,6 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-
 from data_access.database import get_db
 from data_access.models import User
 from security.password_utils import hash_password

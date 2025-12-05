@@ -1,12 +1,12 @@
 import pytest
-from fastapi.testclient import TestClient
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel import SQLModel
-from sqlmodel.pool import StaticPool
-from httpx import AsyncClient
 import pytest_asyncio
+from fastapi.testclient import TestClient
+from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlmodel import SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlmodel.pool import StaticPool
 
 from data_access.database import get_db
 from main import app

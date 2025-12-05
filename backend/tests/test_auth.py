@@ -1,5 +1,6 @@
-from fastapi.testclient import TestClient
 import pytest
+from fastapi.testclient import TestClient
+
 
 @pytest.mark.asyncio
 async def test_register_endpoint(client):

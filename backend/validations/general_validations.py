@@ -1,5 +1,6 @@
 import re
 
+
 def validate_email(email: str) -> bool:
     pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
     if re.match(pattern, email):

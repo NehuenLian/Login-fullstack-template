@@ -1,10 +1,11 @@
+import os
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
-from jose import jwt, JWTError, ExpiredSignatureError
+from jose import ExpiredSignatureError, JWTError, jwt
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from sqlmodel.ext.asyncio.session import AsyncSession
-import os
 
 from data_access import crud
 from data_access.database import get_db
