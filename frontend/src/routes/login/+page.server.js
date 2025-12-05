@@ -17,7 +17,7 @@ async function handleLogin({request, cookies}) {
         return fail(400, { error: "Please enter a valid email." })
     }
 
-    const backendResponse = await fetch(`${API_URL}/auth/login`, {
+    const backendResponse = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify( {email, password} ),

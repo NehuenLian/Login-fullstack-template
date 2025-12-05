@@ -1,3 +1,7 @@
+import { PUBLIC_API_URL } from '$env/static/public';
+
+const API_URL = PUBLIC_API_URL;
+
 function getStoredToken() {
     if (typeof window === 'undefined') return null;
 
@@ -28,7 +32,7 @@ export async function fetchWithApi(url, options = {}) {
         
         if (errorMessages.includes(errorData.detail)) {
 
-            const refreshRes = await fetch('http://localhost:8000/api/auth/refresh', 
+            const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, 
             { method: 'POST', credentials: 'include'});
 
             if (refreshRes.ok) {
