@@ -17,7 +17,7 @@ async function handleRegister({request}) {
         return fail(400, { error: "Password and Confirmation password aren't identic." })
     }
 
-    const backendResponse = await fetch(`${API_URL}/auth/register`, {
+    const backendResponse = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify( {email, password })
