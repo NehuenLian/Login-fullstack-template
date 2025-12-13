@@ -27,9 +27,16 @@ async function refresh() { // -> bool
     });
 
     if (response.status === 401) {
+        await fetch('/logout', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: ''  // cuerpo vacío, pero válido para form action
+        });
         clearStoredToken();
-        window.location.href = '/logout';
-        return;
+        window.location.href = '/login';
     }
 
     if (!response.ok) {

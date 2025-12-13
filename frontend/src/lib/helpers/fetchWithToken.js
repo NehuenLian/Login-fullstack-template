@@ -20,18 +20,33 @@ export async function fetchWithApi(url, options = {}) {
     const tokenIsValid = await validateAndRefreshToken(); // verifies access token expiration
 
     if (!tokenIsValid) {
-        window.location.href = '/logout';
-        return;
+        await fetch('/logout', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: ''
+        });
+        sessionStorage.removeItem('access_token');
+        window.location.href = '/login';
     }
     const token = getStoredAccessToken();
-
     let res = await fetch(url, { ...options,
         credentials: 'include',
     })
 
     if (res.status === 401) {
-        window.location.href = '/logout';
-        return;
+        await fetch('/logout', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: ''
+        });
+        sessionStorage.removeItem('access_token');
+        window.location.href = '/login';
     }
     return res;
 }
