@@ -33,7 +33,7 @@ async function refresh() { // -> bool
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: ''  // cuerpo vacío, pero válido para form action
+            body: ''
         });
         clearStoredToken();
         window.location.href = '/login';
