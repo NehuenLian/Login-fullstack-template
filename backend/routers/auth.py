@@ -13,6 +13,7 @@ from security.tokens_utils import create_access_token, create_refresh_token
 from validations.general_validations import (validate_email,
                                              validate_password_conditions)
 from validations.schemas import UserLogin, UserRegister
+from validations.dependencies import get_current_user
 
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
@@ -88,3 +89,15 @@ def refresh_token(request: Request):
     new_access_token = create_access_token({"sub" : user_email})
     
     return {"access_token" : new_access_token, "token_type" : "bearer"}
+
+
+@router.get("/auth/protected-test")
+async def protected_test(current_user = Depends(get_current_user)):
+    """
+    Test endpoint for protected routes.
+
+    Quickly checks that access tokens are working.
+    Prints the authenticated user's email to the console and returns a success message.
+    """
+    print("Hello from backend:", current_user.email)
+    return {"message": "success"}
