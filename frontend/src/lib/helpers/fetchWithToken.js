@@ -1,11 +1,13 @@
 import { PUBLIC_API_URL } from '$env/static/public';
+import { validateAndRefreshToken } from './tokenValidator.js';
 
 const API_URL = PUBLIC_API_URL;
 
-function getStoredToken() {
+function getStoredAccessToken() {
     if (typeof window === 'undefined') return null;
+    let token = sessionStorage.getItem('access_token');
 
-    return sessionStorage.getItem('access_token');
+    return token;
 }
 
 function setStoredToken(token) {
@@ -14,44 +16,22 @@ function setStoredToken(token) {
 }
 
 export async function fetchWithApi(url, options = {}) {
-    const token = getStoredToken(); // get sessionStorage token
 
-    let res = await fetch(url, { ...options, credentials: 'include', 
-        headers: {
-            ...options.headers,
-            ...(token ? { 'Authorization': 'Bearer ' + token } : {})
-        }
-    });
+    const tokenIsValid = await validateAndRefreshToken(); // verifies access token expiration
+
+    if (!tokenIsValid) {
+        window.location.href = '/logout';
+        return;
+    }
+    const token = getStoredAccessToken();
+
+    let res = await fetch(url, { ...options,
+        credentials: 'include',
+    })
 
     if (res.status === 401) {
-        const errorData = await res.json();
-        const errorMessages = ["Missing refresh token", 
-                                "Invalid token type", 
-                                "Refresh token expired", 
-                                "Invalid token"];
-        
-        if (errorMessages.includes(errorData.detail)) {
-
-            const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, 
-            { method: 'POST', credentials: 'include'});
-
-            if (refreshRes.ok) {
-                const data = await refreshRes.json();
-                const newAccessToken = data.access_token;
-                setStoredToken(newAccessToken);
-                
-                res = await fetch(url, { ...options,  credentials: 'include',
-                    headers: {
-                        ...options.headers,
-                        'Authorization': 'Bearer ' + newAccessToken
-                    }
-                });
-            } 
-            else {
-                window.location.href = '/login';
-                return;
-            }
-        } 
+        window.location.href = '/logout';
+        return;
     }
     return res;
 }
